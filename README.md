@@ -15,10 +15,11 @@ Send a specific code or simply get one sample by calling ``getparsiveldata()
 
 ### 3. Commands list
 #### communication / sampling - related
+- `sample` => Starts sampling the parsivel for a certain amount of time (default 15 minutes) at a certain frequency (default 10 sec)
 - `pollcode` => Sends a single code to the parsivel, which reports the measurement of that code. See parsivel manual for codes
+- `getparsiveldata` => Polls the parsivel with CS/PA and save the return values to self.buffer / self.data (the first being a byte string the latter being a dict which contains the answer per code)
 - `help` => Returns the parsivel help (which lists CS/X commands that could be issued to the parsivel. See parsivel manual for more information
 - `getconfig` => Returns the current config of the parsivel. See parsivel manual for more information
-- `getparsiveldata` => Polls the parsivel with CS/PA and save the return values to self.buffer / self.data (the first being a byte string the latter being a dict which contains the answer per code)
 - `write2file` => shorthand for calling `write2nc` / `write2asdofile` where each writes out data to a dailyfile in the corresponding format
 - Various helper functions, such as `poll`, `clearbuffer`, `cleardata`, `clear`, `velocity_classes`, `diameter_classes`, `_setupncfile`
 - More methods/attrs => See [pyserial documentation](https://pyserial.readthedocs.io/en/latest/pyserial_api.html) as the class parsivel class inherits all attrs/methods
@@ -47,6 +48,7 @@ Send a specific code or simply get one sample by calling ``getparsiveldata()
 
 ## Known bugs
 - Writeoutfreq should allow for writing out a new record only every x seconds but due the shape missmatch to the netCDf this is not working as intended (yet)
+- Due to the timing of processing from polling to actual response the interval is often 1-2 seconds longer than the requested frequency. For anaylysis, this should not make a large difference
 
 ## Background
 ### Parsivel
