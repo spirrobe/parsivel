@@ -120,7 +120,10 @@ class parsivel_moxa(serial.Serial):
 
         self.ncscaling = {'01': 60 * 60 / 1000,
                          }
+        self.ncoffsetting = {'12': 273.15,
+                            }
 
+        
         # add any other information from ncmeta
         for key, value in ncmeta.items():
            #if key.lower() in ['name', 'location']:
@@ -919,8 +922,12 @@ class parsivel_moxa(serial.Serial):
             for ncvar in self.ncmapping:
                 thisvar = nchandle.variables[self.ncmapping[ncvar]]
                 thisdata = [self.data[ncvar][i] for i in index_of_day]
+                
                 if ncvar in self.ncscaling:
                      thisdata = [i * self.ncscaling[ncvar] for i in thisdata]
+                
+                if ncvar in self.ncoffsetting:
+                     thisdata = [i + self.ncoffsetting[ncvar] for i in thisdata]
 
                 if len(thisvar.shape) == 1:
                     thisvar[curtimestep] = (thisdata)
@@ -1056,3 +1063,5 @@ if __name__ == '__main__':
     #    del parsivel
     #finally:
     #    del parsivel
+
+   
